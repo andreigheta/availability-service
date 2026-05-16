@@ -56,6 +56,10 @@ class DatabaseServiceClient:
 
         return response
 
+    def readiness_check(self) -> None:
+        response = self._request("GET", "/health/ready")
+        response.raise_for_status()
+
     def list_available_slots(
         self,
         *,

@@ -29,6 +29,15 @@ def healthcheck() -> dict[str, str]:
     return {"status": "ok"}
 
 
+@router.get("/health/ready", tags=["health"])
+def readiness_check() -> dict[str, str]:
+    try:
+        db_client.readiness_check()
+        return {"status": "ready", "database_service": "ok"}
+    except DatabaseServiceError as exc:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(exc)) from exc
+
+
 @router.get("/availability/slots", response_model=list[AvailabilitySlotRead], tags=["availability"])
 def list_available_slots(
     dentist_name: str | None = None,

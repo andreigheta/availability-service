@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class AvailabilitySlotCreateRequest(BaseModel):
@@ -39,6 +39,8 @@ class AvailabilitySlotRead(BaseModel):
     is_reserved: bool
     notes: str | None
     created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class AvailabilitySlotActionResponse(BaseModel):
